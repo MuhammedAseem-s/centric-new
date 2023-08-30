@@ -1,10 +1,10 @@
 
-import QuestionMain from "./components/QuestionsMain";
+import QuestionsMain from "./components/QuestionsMain";
 
 function App() {
   return (
     <div className="App">
-      <QuestionMain/>
+      <QuestionsMain/>
     </div>
   );
 }
