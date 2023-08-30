@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import data from './data'
-// import './question.css'
+import './Question.css'
 
-const QuestionsMain = () => {
+const QuestionMain = () => {
     console.log("Data", data)
     const [qno, setqno] = useState(0)
     const [qn, setQn] = useState('')
     const [options, setOptions] = useState([])
+
     function fetchQns(nos) {
 
         setQn(data[nos].question) //statefunc  to set questions
         setOptions(data[qno].options) // state func to set options to questions
     }
-    
+    let finalData = []
 
 
     useEffect(() => {
@@ -24,7 +25,38 @@ const QuestionsMain = () => {
         }
     }, [qno])
 
-    
+
+    function checkAnswer(dt) {
+        console.log("in onclick ")
+        if (dt?.isCorrect) {
+        }
+        else {
+            let tempdata = [...data] //duplication of data 
+            const Index = tempdata[qno].options?.findIndex((itemId)=> itemId?.id === dt?.id)
+            finalData = tempdata[qno].options.map((item)=>
+            item.id === Index ? (
+                {
+                    id : item?.id,
+                    label : item?.label,
+                    isCorrect : true
+                } 
+            ) : 
+            (
+                    {
+                        id : item?.id,
+                        label : item?.label,
+                        isCorrect : false
+                    } 
+            )
+
+            )
+            setOptions(finalData)
+        }
+        setTimeout(() => {
+            setqno(qno + 1)
+        }, 3000);
+    }
+
     return (
         <div>
             <div>
@@ -38,7 +70,7 @@ const QuestionsMain = () => {
                             options.length > 0 && options.map((optItem) => {
                                  console.log("Optitme",optItem)
                                 return (
-                                        <div>
+                                        <div className= 'bg-blue-800 h-[300px] w-[300px] flex items-center justify-center card-item'  onClick={() => checkAnswer(optItem)}>
                                             <span className='text-white'>{optItem?.label}</span>
                                         </div>
                                 )
@@ -46,9 +78,14 @@ const QuestionsMain = () => {
                         }
                     </div>
                 </div>
+                {
+                    <div  className='text-white h-[14vh] mt-5 flex justify-center items-center'>
+                        {/* {isCorrect?.Status} */}
+                    </div>
+                }
             </div>
         </div>
     )
 }
 
-export default QuestionsMain
+export default QuestionMain
