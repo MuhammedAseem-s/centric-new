@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import data from './data'
+import './question.css'
 
-const QuestionMain = () => {
+const QuestionsMain = () => {
     console.log("Data", data)
     const [qno, setqno] = useState(0)
     const [qn, setQn] = useState('')
     const [options, setOptions] = useState([])
     const [visibility, setVisiblility] = useState(null)
     const [isCorrect, setIscorrect] = useState({
+        // modalOpen: false,
         Status: ''
     })
-
-    console.log("render check")
 
     function fetchQns(nos) {
 
@@ -19,6 +19,10 @@ const QuestionMain = () => {
         setOptions(data[qno].options) // state func to set options to questions
     }
     let finalData = []
+
+    //To fetch Question
+    // state variable and state function to take questkion number
+    //qno increments while setting nexgt question  by 1
 
     useEffect(() => {
         if (qno < data.length) {
@@ -87,7 +91,7 @@ const QuestionMain = () => {
             <div className='bg-purple-900'>
                 <div className='flex flex-wrap flex-col items-center'>
                     <p className='text-white font-black  pt-[7rem] p-4'>{qn}</p>
-                    <div>
+                    <div className={isCorrect?.Status === 'CORRECT' ? 'flex flex-wrap justify-center items-center gap-2 mt-[2rem] option-success'  : isCorrect?.Status === 'WRONG' ? 'flex items-center justify-center flex-wrap gap-2 mt-[2rem] option-failed' : 'flex items-center justify-center flex-wrap gap-2 mt-[2rem] option-parent'}>
                         {
                             options.length > 0 && options.map((optItem) => {
                                  console.log("Optitme",optItem)
@@ -101,7 +105,7 @@ const QuestionMain = () => {
                     </div>
                 </div>
                 {
-                    <div>
+                    <div style={isCorrect?.Status === 'CORRECT' ? { backgroundColor: 'green' } : isCorrect?.Status === 'WRONG' ? { backgroundColor: 'red' } : { backgroundColor: 'black' }} className='text-white h-[14vh] mt-5 flex justify-center items-center'>
                         {isCorrect?.Status}
                     </div>
                 }
@@ -110,4 +114,4 @@ const QuestionMain = () => {
     )
 }
 
-export default QuestionMain
+export default QuestionsMain
