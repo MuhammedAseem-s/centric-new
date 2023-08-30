@@ -12,7 +12,7 @@ const QuestionsMain = () => {
         setQn(data[nos].question) //statefunc  to set questions
         setOptions(data[qno].options) // state func to set options to questions
     }
-    let finalData = []
+    
 
 
     useEffect(() => {
