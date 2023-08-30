@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import data from './data'
-import './Question.css'
 
 const QuestionMain = () => {
     console.log("Data", data)
     const [qno, setqno] = useState(0)
     const [qn, setQn] = useState('')
     const [options, setOptions] = useState([])
+    const [visibility, setVisiblility] = useState(null)
+    const [isCorrect, setIscorrect] = useState({
+        Status: ''
+    })
 
     function fetchQns(nos) {
 
@@ -15,7 +18,6 @@ const QuestionMain = () => {
     }
     let finalData = []
 
-
     useEffect(() => {
         if (qno < data.length) {
             fetchQns(qno) // function to set data to local state
@@ -23,14 +25,32 @@ const QuestionMain = () => {
         else {
             setqno(0) //once all qns are covered this function rstarts to first qns that is id:0
         }
+        setIscorrect({
+            // modalOpen: false,
+            Status: ''
+        } 
+
+        )
+        setVisiblility(null)
     }, [qno])
 
 
     function checkAnswer(dt) {
-        console.log("in onclick ")
         if (dt?.isCorrect) {
+            setVisiblility(true)
+            setIscorrect({
+                // modalOpen: true,
+                Status: 'CORRECT'
+            }
+            )
         }
         else {
+            setIscorrect({
+                // modalOpen: true,
+                Status: 'WRONG'
+            }
+            )
+            setVisiblility(true)
             let tempdata = [...data] //duplication of data 
             const Index = tempdata[qno].options?.findIndex((itemId)=> itemId?.id === dt?.id)
             finalData = tempdata[qno].options.map((item)=>
@@ -70,7 +90,7 @@ const QuestionMain = () => {
                             options.length > 0 && options.map((optItem) => {
                                  console.log("Optitme",optItem)
                                 return (
-                                        <div className= 'bg-blue-800 h-[300px] w-[300px] flex items-center justify-center card-item'  onClick={() => checkAnswer(optItem)}>
+                                        <div className= 'bg-blue-800 h-[300px] w-[300px] flex items-center justify-center card-item' style={visibility && !optItem.isCorrect ? { visibility: 'hidden' } :  { visibility: 'visible' }  } onClick={() => checkAnswer(optItem)}>
                                             <span className='text-white'>{optItem?.label}</span>
                                         </div>
                                 )
@@ -79,8 +99,8 @@ const QuestionMain = () => {
                     </div>
                 </div>
                 {
-                    <div  className='text-white h-[14vh] mt-5 flex justify-center items-center'>
-                        {/* {isCorrect?.Status} */}
+                    <div>
+                        {isCorrect?.Status}
                     </div>
                 }
             </div>
