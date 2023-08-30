@@ -11,6 +11,8 @@ const QuestionMain = () => {
         Status: ''
     })
 
+    console.log("render check")
+
     function fetchQns(nos) {
 
         setQn(data[nos].question) //statefunc  to set questions
